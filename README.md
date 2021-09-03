@@ -1,4 +1,4 @@
-# usefull-hooks
+# useful hooks
 Useful React Hooks Collection
 
 ### websites:
