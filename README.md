@@ -162,3 +162,22 @@ export const useWindowResize = (callback: () => void, debounceTime = 0) => {
     }, [callback, debounceTime, debouncedCallback]);
 };
 ```
+
+### useOnClickOutside
+```javascript
+export const useOnClickOutside = (ref: RefObject<HTMLDivElement>, handler: (e: Event) => void) => {
+    useEffect(() => {
+        const listener = (event: Event) => {
+            if (!ref.current || ref.current.contains(event.target as Node)) {
+                return;
+            }
+
+            handler(event);
+        };
+        document.addEventListener("mousedown", listener);
+        return () => {
+            document.removeEventListener("mousedown", listener);
+        };
+    }, [ref, handler]);
+};
+```
