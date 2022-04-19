@@ -202,3 +202,24 @@ export const usePrevious = <T>(props: T): T => {
     return previousProps.current;
 };
 ```
+
+### useDeepEffect
+```javascript
+import { useRef, useEffect } from "react";
+import isEqual from "lodash/isEqual";
+
+export const useDeepEffect = (effectFunc: () => any, deps: React.DependencyList) => {
+    const isFirst = useRef(true);
+    const prevDeps = useRef(deps);
+    useEffect(() => {
+        const isSame = prevDeps.current.every((obj, index) => isEqual(obj, deps[index]));
+        if (isFirst.current || !isSame) {
+            effectFunc();
+        }
+        isFirst.current = false;
+        prevDeps.current = deps;
+        // The static verification warning for deps makes no sense here
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [effectFunc, ...deps]);
+};
+```
