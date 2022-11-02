@@ -311,3 +311,62 @@ function calculateOpacity(current: number, size: number) {
 }
 
 ```
+
+### useFocus
+ ```javascript
+ // (C) 2021-2022 GoodData Corporation
+
+import React, { useEffect, useRef } from "react";
+import { InputPure } from "@gooddata/sdk-ui-kit";
+
+export function useFocus(component: HTMLElement | InputPure | null, focus: boolean): void {
+    const timer = useRef<number>(-1);
+    const element = getElement(component);
+
+    useEffect(() => {
+        clearInterval(timer);
+        if (element && component && focus) {
+            createInterval(
+                timer,
+                () => isVisible(element),
+                () => component.focus(),
+            );
+        }
+
+        return () => clearInterval(timer);
+    }, [component, focus, element]);
+}
+
+function isVisible(element: HTMLElement | null) {
+    if (element) {
+        const style = window.getComputedStyle(element);
+        const notHidden = style.visibility !== "hidden";
+        const notNone = style.display !== "none";
+        const hasSize = element.offsetHeight > 0;
+
+        return notHidden && notNone && hasSize;
+    }
+    return false;
+}
+
+function getElement(component: HTMLElement | InputPure | null): HTMLElement | null {
+    if (component instanceof InputPure) {
+        return component.inputNodeRef || null;
+    }
+    return component;
+}
+
+function clearInterval(timer: React.MutableRefObject<number>) {
+    window.clearInterval(timer.current);
+}
+
+function createInterval(timer: React.MutableRefObject<number>, check: () => boolean, done: () => void) {
+    timer.current = window.setInterval(() => {
+        if (check()) {
+            done();
+            clearInterval(timer);
+        }
+    }, 25);
+}
+
+ ```
