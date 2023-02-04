@@ -142,7 +142,6 @@ export const useAsync = <Result = any, Args extends any[] = any[]>(
 
 ### useWindowResize
 ```javascript
-// (C) 2019-2020 GoodData Corporation
 import { useEffect, useRef } from "react";
 import { debounce } from "lodash";
 
@@ -183,7 +182,6 @@ export const useOnClickOutside = (ref: RefObject<HTMLDivElement>, handler: (e: E
 ```
 ### usePrevious
 ```javascript
-// (C) 2021 GoodData Corporation
 import { useEffect, useRef } from "react";
 
 /**
@@ -314,10 +312,8 @@ function calculateOpacity(current: number, size: number) {
 
 ### useFocus
  ```javascript
- // (C) 2021-2022 GoodData Corporation
 
 import React, { useEffect, useRef } from "react";
-import { InputPure } from "@gooddata/sdk-ui-kit";
 
 export function useFocus(component: HTMLElement | InputPure | null, focus: boolean): void {
     const timer = useRef<number>(-1);
